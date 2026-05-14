@@ -19,6 +19,16 @@
   </define>
 
   <materials>
+    <isotope N="1" Z="1" name="H10xc9f039300">
+      <atom unit="g/mole" value="1.007825"/>
+    </isotope>
+    <isotope N="2" Z="1" name="H20xc9f039340">
+      <atom unit="g/mole" value="2.014102"/>
+    </isotope>
+    <element name="H0xc9f110300">
+      <fraction n="0.999885" ref="H10xc9f039300"/>
+      <fraction n="0.000115" ref="H20xc9f039340"/>
+    </element>
     <isotope N="12" Z="6" name="C120xc9f0393c0">
       <atom unit="g/mole" value="12"/>
     </isotope>
@@ -103,9 +113,21 @@
       <D unit="g/cm3" value="8.0"/>
       <fraction n="1.0" ref="G4_STAINLESS-STEEL"/>
     </material>
+    <material name="WhitePVC">
+      <D unit="g/cm3" value="1.38"/>
+      <fraction n="1.0" ref="G4_POLYVINYL_CHLORIDE"/>
+    </material>
+    <material name="PolyurethaneFoam">
+      <D unit="g/cm3" value="0.032"/>
+      <fraction n="0.060" ref="H0xc9f110300"/>
+      <fraction n="0.630" ref="C0xc9f1103c0"/>
+      <fraction n="0.060" ref="N0xc9f110480"/>
+      <fraction n="0.250" ref="O0xc9f110540"/>
+    </material>
   </materials>
 
   <solids>
+    <box lunit="mm" name="WorldBox" x="2000" y="2000" z="2000"/>
     <polycone aunit="deg" deltaphi="360" lunit="mm" name="srcHousing0xc9f110a80" startphi="0">
       <zplane rmax="26.025" rmin="0" z="0"/>
       <zplane rmax="26.025" rmin="0" z="1.6229"/>
@@ -114,6 +136,7 @@
     </polycone>
     <tube aunit="deg" deltaphi="360" lunit="mm" name="shield0xc9f035500" rmax="26.025" rmin="0" startphi="0" z="11.63"/>
     <tube aunit="deg" deltaphi="360" lunit="mm" name="foam0xc9f035600" rmax="26.025" rmin="14.29" startphi="0" z="100"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="pmt0xc9f035800" rmax="12.25" rmin="0" startphi="0" z="100"/>
     <polycone aunit="deg" deltaphi="360" lunit="mm" name="srcHousing0xc9f114180" startphi="0">
       <zplane rmax="26.025" rmin="25" z="0"/>
       <zplane rmax="26.025" rmin="25" z="19.999"/>
@@ -164,6 +187,10 @@
       <second ref="endCapTop0xc9f009140"/>
       <position name="AmBeHousing0xc9f1b0540_pos" unit="mm" x="0" y="0" z="190"/>
     </union>
+    <opticalsurface finish="ground" model="glisur" name="BGO_Teflon_OpticalSurface" type="dielectric_metal" value="0.9">
+      <property name="REFLECTIVITY" ref="TEFLON_REFLECTIVITY"/>
+      <property name="EFFICIENCY" ref="TEFLON_EFFICIENCY"/>
+    </opticalsurface>
   </solids>
 
   <structure>
@@ -176,8 +203,12 @@
       <solidref ref="shield0xc9f035500"/>
     </volume>
     <volume name="black_foam0xc9f1b48c0">
-      <materialref ref="G4_AIR0x10a757fe0"/>
+      <materialref ref="PolyurethaneFoam"/>
       <solidref ref="foam0xc9f035600"/>
+    </volume>
+    <volume name="PMTLV0xc9f1b4900">
+      <materialref ref="Teflon"/>
+      <solidref ref="pmt0xc9f035800"/>
     </volume>
     <volume name="pmt_holder0xc9f1b4960">
       <materialref ref="G4_AIR0x10a757fe0"/>
@@ -214,6 +245,10 @@
         <volumeref ref="black_foam0xc9f1b48c0"/>
         <position name="black_foam_PV0xc9f011360_pos" unit="mm" x="0" y="0" z="-58.365"/>
       </physvol>
+      <physvol name="PMT_PV0xc9f011380">
+        <volumeref ref="PMTLV0xc9f1b4900"/>
+        <position name="PMT_PV0xc9f011380_pos" unit="mm" x="0" y="0" z="-58.365"/>
+      </physvol>
       <physvol name="pmt_holder_PV0xc9f0113b0">
         <volumeref ref="pmt_holder0xc9f1b4960"/>
         <position name="pmt_holder_PV0xc9f0113b0_pos" unit="mm" x="0" y="0" z="112"/>
@@ -237,17 +272,35 @@
       </physvol>
     </volume>
     <volume name="AmBeHousingLV0xc9f1b4780">
-      <materialref ref="G4_AIR0x10a757fe0"/>
+      <materialref ref="WhitePVC"/>
       <solidref ref="AmBeHousing0xc9f1b0540"/>
       <physvol name="barrel_air_vol_PV0x10a766210">
         <volumeref ref="barrel_air_vol_LV0xc9f1b4820"/>
         <position name="barrel_air_vol_PV0x10a766210_pos" unit="mm" x="0" y="0" z="7.365"/>
       </physvol>
     </volume>
+    <volume name="World">
+      <materialref ref="G4_AIR0x10a757fe0"/>
+      <solidref ref="WorldBox"/>
+      <physvol name="AmBeHousing">
+        <volumeref ref="AmBeHousingLV0xc9f1b4780"/>
+      </physvol>
+      <physvol name="BGO_crystal_active">
+        <volumeref ref="BGO_crystal0xc9f1b4a00"/>
+        <position name="BGO_crystal_active_pos" unit="mm" x="0" y="0" z="-126.91"/>
+      </physvol>
+      <physvol name="BGO_teflon_wrapping_active">
+        <volumeref ref="BGO_teflon_wrapping0xc9f040320"/>
+        <position name="BGO_teflon_wrapping_active_pos" unit="mm" x="0" y="0" z="-152.01"/>
+      </physvol>
+    </volume>
+    <skinsurface name="BGO_Teflon_SkinSurface" surfaceproperty="BGO_Teflon_OpticalSurface">
+      <volumeref ref="BGO_teflon_wrapping0xc9f040320"/>
+    </skinsurface>
   </structure>
 
   <setup name="Default" version="1.0">
-    <world ref="AmBeHousingLV0xc9f1b4780"/>
+    <world ref="World"/>
   </setup>
 
 </gdml>

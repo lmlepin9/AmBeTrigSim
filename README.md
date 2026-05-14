@@ -5,10 +5,10 @@ Minimal Geant4 simulation for the AmBe housing GDML geometry.
 ## What it does
 
 - Loads the repo-local `AmBeHousing.gdml` by default.
-- Places the GDML geometry inside a larger invisible air world so particles can emerge from the housing and remain visible.
+- The GDML includes the larger air world and direct active BGO/Teflon placements used by the simulation.
 - Uses the `FTFP_BERT_HP` physics list.
 - Registers Geant4 optical physics; the BGO scintillation material properties are stored in `AmBeHousing.gdml`.
-- Uses the GDML material assignments for BGO, Teflon, and stainless steel; C++ only attaches the reflective optical skin to the Teflon wrapping.
+- Uses the GDML material assignments for BGO, Teflon, stainless steel, and polyurethane foam; the Teflon optical skin is also defined in GDML.
 - The default visualization source is a `4.4 MeV` gamma from `(0, 0, -168.64) mm` pointed off-axis into the BGO crystal, avoiding the central bore.
 - With `--ambe`, the visualization source uses `/home/lmlepin/Check_AmBeSimulation/AmBe-EmergingParticles-N0.root`.
 - In ROOT-source mode, it generates all particles stored in one `EmergingParticles` tree entry per Geant4 event, then advances to the next entry.
