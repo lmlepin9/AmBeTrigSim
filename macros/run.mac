@@ -1,0 +1,7 @@
+/run/initialize
+/AmBe/source/useRootFile true
+/AmBe/source/rootFile /home/lmlepin/Check_AmBeSimulation/AmBe-EmergingParticles-N0.root
+/AmBe/source/rootVertexScale 1
+/AmBe/source/rootVertexOffset 0 0 -168.64 mm
+/AmBe/source/update
+/run/beamOn 10

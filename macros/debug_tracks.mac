@@ -1,0 +1,7 @@
+/run/initialize
+/tracking/verbose 1
+/AmBe/source/particle mu-
+/AmBe/source/energy 1 GeV
+/AmBe/source/position 0 0 -168.64 mm
+/AmBe/source/update
+/run/beamOn 1

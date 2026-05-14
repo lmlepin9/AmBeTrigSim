@@ -1,0 +1,9 @@
+/control/execute macros/vis_setup.mac
+/AmBe/source/useRootFile true
+/AmBe/source/rootFile /home/lmlepin/Check_AmBeSimulation/AmBe-EmergingParticles-N0.root
+/AmBe/source/rootVertexScale 1
+/AmBe/source/rootVertexOffset 0 0 -168.64 mm
+/AmBe/source/rootVerbose true
+/AmBe/source/setRootEntry 0
+/AmBe/source/update
+/vis/viewer/flush

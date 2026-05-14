@@ -1,0 +1,9 @@
+/control/execute macros/vis_setup.mac
+
+/AmBe/source/useRootFile false
+/AmBe/source/particle gamma
+/AmBe/source/energy 4.4 MeV
+/AmBe/source/position 0 0 -168.64 mm
+/AmBe/source/direction 10 0 41.73
+/AmBe/source/update
+/vis/viewer/flush

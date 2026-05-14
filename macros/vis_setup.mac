@@ -1,0 +1,24 @@
+/control/verbose 1
+/run/verbose 1
+/event/verbose 0
+/tracking/verbose 0
+/tracking/storeTrajectory 0
+/AmBe/vis/maxScintillationPhotons 300
+
+/vis/open OGLSQt 900x700-0+0
+/vis/ogl/set/transparency true
+/vis/viewer/set/style wireframe
+/vis/viewer/set/viewpointVector 1 1 0.7
+/vis/viewer/set/lightsVector 1 1 1
+/vis/viewer/set/autoRefresh false
+/vis/verbose errors
+
+/run/initialize
+
+/vis/drawVolume
+/vis/scene/add/axes 0 0 -168.64 25 mm
+/vis/scene/endOfEventAction accumulate 100
+/vis/viewer/set/hiddenEdge 0
+/vis/viewer/zoom 1.0
+/vis/viewer/set/autoRefresh true
+/vis/verbose warnings
