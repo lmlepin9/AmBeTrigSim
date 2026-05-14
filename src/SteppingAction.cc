@@ -1,8 +1,10 @@
 #include "SteppingAction.hh"
 
 #include "G4Colour.hh"
+#include "G4DynamicParticle.hh"
 #include "G4Event.hh"
 #include "G4GenericMessenger.hh"
+#include "G4OpticalPhoton.hh"
 #include "G4Polyline.hh"
 #include "G4RunManager.hh"
 #include "G4Step.hh"
@@ -11,6 +13,7 @@
 #include "G4VisManager.hh"
 #include "G4VVisManager.hh"
 #include "G4VisAttributes.hh"
+#include "PmtHitWriter.hh"
 
 #include <set>
 #include <string>
@@ -21,6 +24,7 @@ G4double bgoEdep = 0.;
 G4int scintillationPhotons = 0;
 G4int visualizedScintillationPhotons = 0;
 G4int maxScintillationPhotonsToDraw = 300;
+G4int verboseOpticalSteps = 0;
 std::set<G4int> scintillationPhotonTracksToDraw;
 
 void PrintAndResetCounters(G4int nextEvent)
@@ -51,6 +55,13 @@ SteppingAction::SteppingAction()
                                 "Maximum number of scintillation optical photons to draw per event. Use -1 for no limit.");
   maxOpticalCommand.SetParameterName("count", false);
   maxOpticalCommand.SetDefaultValue("300");
+
+  auto& verboseOpticalCommand =
+    fMessenger->DeclareProperty("verboseOpticalSteps",
+                                verboseOpticalSteps,
+                                "Print the first N optical-photon steps for geometry debugging.");
+  verboseOpticalCommand.SetParameterName("count", false);
+  verboseOpticalCommand.SetDefaultValue("0");
 }
 
 void SteppingAction::UserSteppingAction(const G4Step* step)
@@ -60,8 +71,9 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
     PrintAndResetCounters(event->GetEventID());
   }
 
-  const auto* track = step->GetTrack();
+  auto* track = step->GetTrack();
   const auto* preVolume = step->GetPreStepPoint()->GetPhysicalVolume();
+  const auto* postVolume = step->GetPostStepPoint()->GetPhysicalVolume();
   if (preVolume && preVolume->GetLogicalVolume()->GetName().find("BGO_crystal") != std::string::npos) {
     bgoEdep += step->GetTotalEnergyDeposit();
   }
@@ -76,6 +88,60 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
       scintillationPhotonTracksToDraw.insert(track->GetTrackID());
       ++visualizedScintillationPhotons;
     }
+  }
+
+  const auto preIsPmt =
+    preVolume &&
+    (preVolume->GetName() == "PMTLV" ||
+     preVolume->GetLogicalVolume()->GetName().find("PMTLV") != std::string::npos);
+  const auto postIsPmt =
+    postVolume &&
+    (postVolume->GetName() == "PMTLV" ||
+     postVolume->GetLogicalVolume()->GetName().find("PMTLV") != std::string::npos);
+
+  const auto isOpticalPhoton =
+    track->GetDefinition() == G4OpticalPhoton::OpticalPhotonDefinition();
+
+  if (isOpticalPhoton && verboseOpticalSteps > 0) {
+    const auto preName = preVolume ? preVolume->GetName() : G4String("<none>");
+    const auto postName = postVolume ? postVolume->GetName() : G4String("<none>");
+    const auto preLogicalName =
+      preVolume ? preVolume->GetLogicalVolume()->GetName() : G4String("<none>");
+    const auto postLogicalName =
+      postVolume ? postVolume->GetLogicalVolume()->GetName() : G4String("<none>");
+    const auto prePosition = step->GetPreStepPoint()->GetPosition();
+    const auto postPosition = step->GetPostStepPoint()->GetPosition();
+    G4cout << "Optical step " << track->GetTrackID()
+           << "." << track->GetCurrentStepNumber()
+           << ": pre " << preName << " / " << preLogicalName
+           << " at " << prePosition / mm << " mm"
+           << " -> post " << postName << " / " << postLogicalName
+           << " at " << postPosition / mm << " mm"
+           << G4endl;
+    --verboseOpticalSteps;
+  }
+
+  if (isOpticalPhoton && (preIsPmt || postIsPmt)) {
+    G4int processId = 2;
+    if (track->GetCreatorProcess()) {
+      const auto processName = track->GetCreatorProcess()->GetProcessName();
+      if (processName == "Scintillation") {
+        processId = 0;
+      } else if (processName == "Cerenkov") {
+        processId = 1;
+      }
+    }
+
+    const auto position = track->GetPosition();
+    PmtHitWriter::Fill(event ? event->GetEventID() : -1,
+                       position.x() / cm,
+                       position.y() / cm,
+                       position.z() / cm,
+                       track->GetGlobalTime() / ns,
+                       track->GetKineticEnergy() / eV,
+                       processId);
+
+    track->SetTrackStatus(fStopAndKill);
   }
 
   auto* visManager = G4VVisManager::GetConcreteInstance();

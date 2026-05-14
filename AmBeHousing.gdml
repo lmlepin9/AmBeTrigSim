@@ -14,6 +14,7 @@
     <matrix coldim="1" name="BGO_SCINTILLATIONYIELD1" values="0.0"/>
     <matrix coldim="1" name="BGO_SCINTILLATIONYIELD2" values="1.0"/>
     <matrix coldim="2" name="TEFLON_RINDEX" values="1.771*eV 1.35 1.922*eV 1.35 2.084*eV 1.35 2.275*eV 1.35 2.505*eV 1.35 2.755*eV 1.35 2.987*eV 1.35 3.220*eV 1.35 3.492*eV 1.35 3.874*eV 1.35 4.350*eV 1.35 5.060*eV 1.35 6.199*eV 1.35"/>
+    <matrix coldim="2" name="TEFLON_ABSLENGTH" values="1.771*eV 1.0e-6*m 6.199*eV 1.0e-6*m"/>
     <matrix coldim="2" name="TEFLON_REFLECTIVITY" values="1.771*eV 0.90 1.922*eV 0.90 2.084*eV 0.90 2.275*eV 0.90 2.505*eV 0.90 2.755*eV 0.90 2.987*eV 0.90 3.220*eV 0.90 3.492*eV 0.90 3.874*eV 0.90 4.350*eV 0.90 5.060*eV 0.90 6.199*eV 0.90"/>
     <matrix coldim="2" name="TEFLON_EFFICIENCY" values="1.771*eV 0.0 1.922*eV 0.0 2.084*eV 0.0 2.275*eV 0.0 2.505*eV 0.0 2.755*eV 0.0 2.987*eV 0.0 3.220*eV 0.0 3.492*eV 0.0 3.874*eV 0.0 4.350*eV 0.0 5.060*eV 0.0 6.199*eV 0.0"/>
   </define>
@@ -104,6 +105,7 @@
     </material>
     <material name="Teflon">
       <property name="RINDEX" ref="TEFLON_RINDEX"/>
+      <property name="ABSLENGTH" ref="TEFLON_ABSLENGTH"/>
       <property name="REFLECTIVITY" ref="TEFLON_REFLECTIVITY"/>
       <property name="EFFICIENCY" ref="TEFLON_EFFICIENCY"/>
       <D unit="g/cm3" value="2.2"/>
@@ -206,7 +208,7 @@
       <materialref ref="PolyurethaneFoam"/>
       <solidref ref="foam0xc9f035600"/>
     </volume>
-    <volume name="PMTLV0xc9f1b4900">
+    <volume name="PMTLV">
       <materialref ref="Teflon"/>
       <solidref ref="pmt0xc9f035800"/>
     </volume>
@@ -245,9 +247,9 @@
         <volumeref ref="black_foam0xc9f1b48c0"/>
         <position name="black_foam_PV0xc9f011360_pos" unit="mm" x="0" y="0" z="-58.365"/>
       </physvol>
-      <physvol name="PMT_PV0xc9f011380">
-        <volumeref ref="PMTLV0xc9f1b4900"/>
-        <position name="PMT_PV0xc9f011380_pos" unit="mm" x="0" y="0" z="-58.365"/>
+      <physvol name="PMTLV_housing">
+        <volumeref ref="PMTLV"/>
+        <position name="PMTLV_pos" unit="mm" x="0" y="0" z="-58.365"/>
       </physvol>
       <physvol name="pmt_holder_PV0xc9f0113b0">
         <volumeref ref="pmt_holder0xc9f1b4960"/>
@@ -292,6 +294,10 @@
       <physvol name="BGO_teflon_wrapping_active">
         <volumeref ref="BGO_teflon_wrapping0xc9f040320"/>
         <position name="BGO_teflon_wrapping_active_pos" unit="mm" x="0" y="0" z="-152.01"/>
+      </physvol>
+      <physvol name="PMTLV">
+        <volumeref ref="PMTLV"/>
+        <position name="PMTLV_active_pos" unit="mm" x="0" y="0" z="-51.91"/>
       </physvol>
     </volume>
     <skinsurface name="BGO_Teflon_SkinSurface" surfaceproperty="BGO_Teflon_OpticalSurface">

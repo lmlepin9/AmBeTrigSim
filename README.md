@@ -9,6 +9,8 @@ Minimal Geant4 simulation for the AmBe housing GDML geometry.
 - Uses the `FTFP_BERT_HP` physics list.
 - Registers Geant4 optical physics; the BGO scintillation material properties are stored in `AmBeHousing.gdml`.
 - Uses the GDML material assignments for BGO, Teflon, stainless steel, and polyurethane foam; the Teflon optical skin is also defined in GDML.
+- Records optical photons entering `PMTLV` into a ROOT tree named `ph`, matching the `BGOg4Sim` branch layout.
+- Includes a separate C++ PMT electronics-response builder in `pmt_response/`.
 - The default visualization source is a `4.4 MeV` gamma from `(0, 0, -168.64) mm` pointed off-axis into the BGO crystal, avoiding the central bore.
 - With `--ambe`, the visualization source uses `/home/lmlepin/Check_AmBeSimulation/AmBe-EmergingParticles-N0.root`.
 - In ROOT-source mode, it generates all particles stored in one `EmergingParticles` tree entry per Geant4 event, then advances to the next entry.
@@ -21,6 +23,13 @@ Minimal Geant4 simulation for the AmBe housing GDML geometry.
 setup_env AmBe-sim
 cmake -S . -B build
 cmake --build build
+```
+
+This builds both the Geant4 simulation and the PMT response executable:
+
+```text
+build/ambe_sim
+build/pmt_response
 ```
 
 ## Run interactively
@@ -65,3 +74,19 @@ Useful source commands:
 ```
 
 The ROOT vertex coordinates are treated as millimeters relative to the AmBe source center by default, so they are offset by `(0, 0, -168.64) mm`.
+
+## PMT optical-photon hits and response
+
+During a run, optical photons entering the GDML `PMTLV` volume are written to `OutPut.root` in a tree named `ph` with branches:
+
+```text
+evt, x, y, z, t, e, process
+```
+
+To convert those hits into PMT waveforms:
+
+```bash
+./build/pmt_response OutPut.root waveforms.root
+```
+
+See `pmt_response/README.md` for the response model and output details.
