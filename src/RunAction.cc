@@ -1,5 +1,6 @@
 #include "RunAction.hh"
 
+#include "AmBeRunStatistics.hh"
 #include "G4GenericMessenger.hh"
 #include "G4Run.hh"
 #include "G4Timer.hh"
@@ -21,6 +22,7 @@ RunAction::RunAction()
 void RunAction::BeginOfRunAction(const G4Run* run)
 {
   G4cout << "### Run " << run->GetRunID() << " start." << G4endl;
+  AmBeRunStatistics::Reset();
   auto outputFile = fOutputFile;
   if (outputFile.find(".") == G4String::npos) {
     outputFile += ".root";
@@ -31,4 +33,5 @@ void RunAction::BeginOfRunAction(const G4Run* run)
 void RunAction::EndOfRunAction(const G4Run*)
 {
   PmtHitWriter::Close();
+  AmBeRunStatistics::PrintSummary();
 }

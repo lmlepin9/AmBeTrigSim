@@ -7,6 +7,7 @@ find_package(ROOT REQUIRED COMPONENTS Core Tree MathCore Hist RIO)
 
 add_executable(ambe_sim
   ambe_sim.cc
+  src/AmBeRunStatistics.cc
   src/ActionInitialization.cc
   src/DetectorConstruction.cc
   src/PmtHitWriter.cc

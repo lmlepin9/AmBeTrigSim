@@ -75,6 +75,8 @@ Useful source commands:
 
 The ROOT vertex coordinates are treated as millimeters relative to the AmBe source center by default, so they are offset by `(0, 0, -168.64) mm`.
 
+For ROOT AmBe source runs, the end-of-run printout includes an AmBe event summary. The gamma-specific denominator is the number of ROOT entries in the run containing a primary gamma within 0.2 MeV of 4.4 MeV. The crossing count is restricted to that primary gamma, and the gamma scintillation count is restricted to scintillation produced by that gamma's Geant4 track lineage, so neutron-induced scintillation in the same event is not counted. The same summary also reports the fraction of all ROOT source events that produced any BGO scintillation, the fraction produced by a primary-neutron track lineage, and the overlap where both tagged-gamma and primary-neutron lineages produced scintillation in the same event.
+
 ## PMT optical-photon hits and response
 
 During a run, optical photons entering the GDML `PMTLV` volume are written to `OutPut.root` in a tree named `ph` with branches:

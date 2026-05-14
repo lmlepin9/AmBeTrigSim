@@ -1,5 +1,6 @@
 #include "RootPrimarySource.hh"
 
+#include "AmBeRunStatistics.hh"
 #include "G4Event.hh"
 #include "G4Exception.hh"
 #include "G4ParticleDefinition.hh"
@@ -14,6 +15,11 @@
 #include <algorithm>
 #include <cmath>
 #include <utility>
+
+namespace {
+constexpr G4double gammaTagEnergyMeV = 4.4;
+constexpr G4double gammaTagToleranceMeV = 0.2;
+}
 
 RootPrimarySource::RootPrimarySource(G4String path)
   : fPath(std::move(path))
@@ -110,6 +116,7 @@ void RootPrimarySource::GenerateEvent(G4Event* event, G4ParticleGun& gun)
   }
 
   auto* particleTable = G4ParticleTable::GetParticleTable();
+  auto hasFourPointFourGamma = false;
   for (std::size_t i = 0; i < fPDG->size(); ++i) {
     auto* particle = particleTable->FindParticle(fPDG->at(i));
     if (!particle) {
@@ -132,6 +139,10 @@ void RootPrimarySource::GenerateEvent(G4Event* event, G4ParticleGun& gun)
     const auto totalEnergyMeV = momentum.E();
     const auto massMeV = particle->GetPDGMass() / MeV;
     const auto kineticEnergyMeV = std::max(0., totalEnergyMeV - massMeV);
+    if (fPDG->at(i) == 22 &&
+        std::abs(kineticEnergyMeV - gammaTagEnergyMeV) <= gammaTagToleranceMeV) {
+      hasFourPointFourGamma = true;
+    }
 
     gun.SetParticleDefinition(particle);
     gun.SetParticlePosition(position);
@@ -147,5 +158,6 @@ void RootPrimarySource::GenerateEvent(G4Event* event, G4ParticleGun& gun)
     }
   }
 
+  AmBeRunStatistics::RegisterRootEvent(event->GetEventID(), hasFourPointFourGamma);
   ++fCurrentEntry;
 }
