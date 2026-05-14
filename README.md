@@ -1,6 +1,6 @@
 # AmBeTrigSim
 
-Minimal Geant4 simulation for the AmBe housing GDML geometry. This simulation has contributions from Amala Augusthy (AmBeHousing geometry) and Bruno Gelli (BGO scintillation and PMT response). 
+Minimal Geant4 simulation for the AmBe housing GDML geometry. This simulation has contributions from Amala Augusthy (AmBeHousing geometry) and Bruno Gelli ([BGOg4Sim](https://github.com/BrunoGelli/BGOg4Sim/tree/master)). 
 
 ## What it does
 
@@ -12,7 +12,7 @@ Minimal Geant4 simulation for the AmBe housing GDML geometry. This simulation ha
 - Records optical photons entering `PMTLV` into a ROOT tree named `ph`, matching the `BGOg4Sim` branch layout.
 - Includes a separate C++ PMT electronics-response builder in `pmt_response/`.
 - The default visualization source is a `4.4 MeV` gamma from `(0, 0, -168.64) mm` pointed off-axis into the BGO crystal, avoiding the central bore.
-- With `--ambe`, the visualization source uses `/home/lmlepin/Check_AmBeSimulation/AmBe-EmergingParticles-N0.root`.
+- With `--ambe`, the visualization source uses [AmBeSim](https://github.com/lmlepin9/AmBeSimulation) output files. 
 - In ROOT-source mode, it generates all particles stored in one `EmergingParticles` tree entry per Geant4 event, then advances to the next entry.
 - Places the default source at `(0, 0, -168.64) mm`, the world-coordinate position of the GDML `logicMarker`, which is at the center of the source capsule/case.
 - Starts an interactive visualization session when run without arguments.

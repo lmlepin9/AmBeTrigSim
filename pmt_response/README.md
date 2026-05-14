@@ -9,7 +9,7 @@ tree: ph
 branches: evt, x, y, z, t, e, process
 ```
 
-The branch layout follows the reference implementation in `/home/lmlepin/BGOg4Sim`:
+The branch layout follows the reference implementation in [BGOg4Sim](https://github.com/BrunoGelli/BGOg4Sim/tree/master):
 
 - `evt`: Geant4 event id.
 - `x`, `y`, `z`: photon hit position at the PMT, in cm.
@@ -66,4 +66,4 @@ The waveform file contains:
 - `CHE_<event>_<timestamp>`: accepted Cerenkov photon time histogram.
 - `BRF_<event>_<timestamp>`: triggered waveform aligned to the trigger time, written only for triggered events.
 
-The response model mirrors the Python script in `BGOg4Sim/scripts/photon_histogram_builder.py`: QE filtering, gain smearing, single-photon response convolution, Gaussian electronic noise, and threshold triggering.
+The response model mirrors the Python script in [BGOg4Sim](https://github.com/BrunoGelli/BGOg4Sim/tree/master): QE filtering, gain smearing, single-photon response convolution, Gaussian electronic noise, and threshold triggering.
