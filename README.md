@@ -1,6 +1,6 @@
 # AmBeTrigSim
 
-Minimal Geant4 simulation for the AmBe housing GDML geometry.
+Minimal Geant4 simulation for the AmBe housing GDML geometry. This simulation has contributions from Amala Augusthy (AmBeHousing geometry) and Bruno Gelli (BGO scintillation and PMT response). 
 
 ## What it does
 
