@@ -1,0 +1,8 @@
+/run/initialize
+/AmBe/output/file pmt_optical_hits.root
+/AmBe/source/particle opticalphoton
+/AmBe/source/energy 0.00000275 MeV
+/AmBe/source/position 0 0 -101.5 mm
+/AmBe/source/direction 0 0 1
+/AmBe/source/update
+/run/beamOn 10
