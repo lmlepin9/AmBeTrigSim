@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+
+  <define>
+    <matrix coldim="2" name="RINDEX0xc9f051b20" values="1.3776e-06 1.00002 6.19921e-06 1.00002"/>
+    <matrix coldim="2" name="GROUPVEL0xc9ec9dce0" values="1.3776e-06 299.786 6.19921e-06 299.786"/>
+  </define>
+
+  <materials>
+    <isotope N="12" Z="6" name="C120xc9f0393c0">
+      <atom unit="g/mole" value="12"/>
+    </isotope>
+    <isotope N="13" Z="6" name="C130xc9f039400">
+      <atom unit="g/mole" value="13.0034"/>
+    </isotope>
+    <element name="C0xc9f1103c0">
+      <fraction n="0.9893" ref="C120xc9f0393c0"/>
+      <fraction n="0.0107" ref="C130xc9f039400"/>
+    </element>
+    <isotope N="14" Z="7" name="N140xc9f039440">
+      <atom unit="g/mole" value="14.0031"/>
+    </isotope>
+    <isotope N="15" Z="7" name="N150xc9f039480">
+      <atom unit="g/mole" value="15.0001"/>
+    </isotope>
+    <element name="N0xc9f110480">
+      <fraction n="0.99632" ref="N140xc9f039440"/>
+      <fraction n="0.00368" ref="N150xc9f039480"/>
+    </element>
+    <isotope N="16" Z="8" name="O160xc9f0394c0">
+      <atom unit="g/mole" value="15.9949"/>
+    </isotope>
+    <isotope N="17" Z="8" name="O170xc9f039540">
+      <atom unit="g/mole" value="16.9991"/>
+    </isotope>
+    <isotope N="18" Z="8" name="O180xc9f039580">
+      <atom unit="g/mole" value="17.9992"/>
+    </isotope>
+    <element name="O0xc9f110540">
+      <fraction n="0.99757" ref="O160xc9f0394c0"/>
+      <fraction n="0.00038" ref="O170xc9f039540"/>
+      <fraction n="0.00205" ref="O180xc9f039580"/>
+    </element>
+    <isotope N="36" Z="18" name="Ar360xc9f0395c0">
+      <atom unit="g/mole" value="35.9675"/>
+    </isotope>
+    <isotope N="38" Z="18" name="Ar380xc9f039600">
+      <atom unit="g/mole" value="37.9627"/>
+    </isotope>
+    <isotope N="40" Z="18" name="Ar400xc9f039500">
+      <atom unit="g/mole" value="39.9624"/>
+    </isotope>
+    <element name="Ar0xc9f110600">
+      <fraction n="0.003365" ref="Ar360xc9f0395c0"/>
+      <fraction n="0.000632" ref="Ar380xc9f039600"/>
+      <fraction n="0.996003" ref="Ar400xc9f039500"/>
+    </element>
+    <material name="G4_AIR0x10a757fe0" state="gas">
+      <property name="RINDEX" ref="RINDEX0xc9f051b20"/>
+      <property name="GROUPVEL" ref="GROUPVEL0xc9ec9dce0"/>
+      <T unit="K" value="293.15"/>
+      <MEE unit="eV" value="85.7"/>
+      <D unit="g/cm3" value="0.00120479"/>
+      <fraction n="0.000124000124000124" ref="C0xc9f1103c0"/>
+      <fraction n="0.755267755267755" ref="N0xc9f110480"/>
+      <fraction n="0.231781231781232" ref="O0xc9f110540"/>
+      <fraction n="0.0128270128270128" ref="Ar0xc9f110600"/>
+    </material>
+  </materials>
+
+  <solids>
+    <polycone aunit="deg" deltaphi="360" lunit="mm" name="srcHousing0xc9f110a80" startphi="0">
+      <zplane rmax="26.025" rmin="0" z="0"/>
+      <zplane rmax="26.025" rmin="0" z="1.6229"/>
+      <zplane rmax="26.025" rmin="7.9" z="1.63"/>
+      <zplane rmax="26.025" rmin="7.9" z="11.63"/>
+    </polycone>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="shield0xc9f035500" rmax="26.025" rmin="0" startphi="0" z="11.63"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="foam0xc9f035600" rmax="26.025" rmin="14.29" startphi="0" z="100"/>
+    <polycone aunit="deg" deltaphi="360" lunit="mm" name="srcHousing0xc9f114180" startphi="0">
+      <zplane rmax="26.025" rmin="25" z="0"/>
+      <zplane rmax="26.025" rmin="25" z="19.999"/>
+      <zplane rmax="26.025" rmin="12.79" z="20"/>
+      <zplane rmax="26.025" rmin="12.79" z="21"/>
+      <zplane rmax="26.025" rmin="25" z="21.001"/>
+      <zplane rmax="26.025" rmin="25" z="120"/>
+    </polycone>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="bgo0xc9f035700" rmax="25" rmin="1" startphi="0" z="50"/>
+    <polycone aunit="deg" deltaphi="360" lunit="mm" name="bgoWrap0xc9f110b40" startphi="0">
+      <zplane rmax="25.1" rmin="0" z="0"/>
+      <zplane rmax="25.1" rmin="0" z="0.09"/>
+      <zplane rmax="25.1" rmin="25" z="0.1"/>
+      <zplane rmax="25.1" rmin="25" z="50.1"/>
+      <zplane rmax="25.1" rmin="14.29" z="50.109"/>
+      <zplane rmax="25.1" rmin="14.29" z="50.2"/>
+    </polycone>
+    <polycone aunit="deg" deltaphi="360" lunit="mm" name="capsule0xc9f110c00" startphi="0">
+      <zplane rmax="7.8" rmin="0" z="0"/>
+      <zplane rmax="7.8" rmin="0" z="1"/>
+      <zplane rmax="7.8" rmin="6.8" z="1.0001"/>
+      <zplane rmax="7.8" rmin="6.8" z="8.9999"/>
+      <zplane rmax="7.8" rmin="0" z="9"/>
+      <zplane rmax="7.8" rmin="0" z="10"/>
+    </polycone>
+    <sphere aunit="deg" deltaphi="360" deltatheta="180" lunit="mm" name="marker0xc9ee85200" rmax="1" rmin="0" startphi="0" starttheta="0"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="barrel_air0xc9ec0c400" rmax="26.025" rmin="0" startphi="0" z="365.27"/>
+    <tube aunit="deg" deltaphi="360" lunit="mm" name="barrel0xc9ec0c200" rmax="35.235" rmin="26.025" startphi="0" z="380"/>
+    <polycone aunit="deg" deltaphi="360" lunit="mm" name="endCapBottom0xc9ee44840" startphi="0">
+      <zplane rmax="35.235" rmin="0" z="0"/>
+      <zplane rmax="35.235" rmin="0" z="20"/>
+      <zplane rmax="26.62" rmin="0" z="20.001"/>
+      <zplane rmax="26.62" rmin="0" z="34.73"/>
+    </polycone>
+    <union name="tempUnion0xc9eeac000">
+      <first ref="barrel0xc9ec0c200"/>
+      <second ref="endCapBottom0xc9ee44840"/>
+      <position name="tempUnion0xc9eeac000_pos" unit="mm" x="0" y="0" z="-210"/>
+    </union>
+    <polycone aunit="deg" deltaphi="360" lunit="mm" name="endCapTop0xc9f009140" startphi="0">
+      <zplane rmax="35.235" rmin="0" z="0"/>
+      <zplane rmax="35.235" rmin="0" z="6.64"/>
+      <zplane rmax="35.235" rmin="0" z="6.65"/>
+      <zplane rmax="19.575" rmin="0" z="31.45"/>
+    </polycone>
+    <union name="AmBeHousing0xc9f1b0540">
+      <first ref="tempUnion0xc9eeac000"/>
+      <second ref="endCapTop0xc9f009140"/>
+      <position name="AmBeHousing0xc9f1b0540_pos" unit="mm" x="0" y="0" z="190"/>
+    </union>
+  </solids>
+
+  <structure>
+    <volume name="source_holder0xc9f0401e0">
+      <materialref ref="G4_AIR0x10a757fe0"/>
+      <solidref ref="srcHousing0xc9f110a80"/>
+    </volume>
+    <volume name="stainless_steel_sheild0xc9f040280">
+      <materialref ref="G4_AIR0x10a757fe0"/>
+      <solidref ref="shield0xc9f035500"/>
+    </volume>
+    <volume name="black_foam0xc9f1b48c0">
+      <materialref ref="G4_AIR0x10a757fe0"/>
+      <solidref ref="foam0xc9f035600"/>
+    </volume>
+    <volume name="pmt_holder0xc9f1b4960">
+      <materialref ref="G4_AIR0x10a757fe0"/>
+      <solidref ref="srcHousing0xc9f114180"/>
+    </volume>
+    <volume name="BGO_crystal0xc9f1b4a00">
+      <materialref ref="G4_AIR0x10a757fe0"/>
+      <solidref ref="bgo0xc9f035700"/>
+    </volume>
+    <volume name="BGO_teflon_wrapping0xc9f040320">
+      <materialref ref="G4_AIR0x10a757fe0"/>
+      <solidref ref="bgoWrap0xc9f110b40"/>
+    </volume>
+    <volume name="src_stainless_steel_capsule0xc9f0403c0">
+      <materialref ref="G4_AIR0x10a757fe0"/>
+      <solidref ref="capsule0xc9f110c00"/>
+    </volume>
+    <volume name="logicMarker0xc9f1b4aa0">
+      <materialref ref="G4_AIR0x10a757fe0"/>
+      <solidref ref="marker0xc9ee85200"/>
+    </volume>
+    <volume name="barrel_air_vol_LV0xc9f1b4820">
+      <materialref ref="G4_AIR0x10a757fe0"/>
+      <solidref ref="barrel_air0xc9ec0c400"/>
+      <physvol name="source_holder_PV0x10a766260">
+        <volumeref ref="source_holder0xc9f0401e0"/>
+        <position name="source_holder_PV0x10a766260_pos" unit="mm" x="0" y="0" z="-182.635"/>
+      </physvol>
+      <physvol name="stainless_steel_sheild_PV0x10a7662b0">
+        <volumeref ref="stainless_steel_sheild0xc9f040280"/>
+        <position name="stainless_steel_sheild_PV0x10a7662b0_pos" unit="mm" x="0" y="0" z="-165.19"/>
+      </physvol>
+      <physvol name="black_foam_PV0xc9f011360">
+        <volumeref ref="black_foam0xc9f1b48c0"/>
+        <position name="black_foam_PV0xc9f011360_pos" unit="mm" x="0" y="0" z="-58.365"/>
+      </physvol>
+      <physvol name="pmt_holder_PV0xc9f0113b0">
+        <volumeref ref="pmt_holder0xc9f1b4960"/>
+        <position name="pmt_holder_PV0xc9f0113b0_pos" unit="mm" x="0" y="0" z="112"/>
+        <rotation name="pmt_holder_PV0xc9f0113b0_rot" unit="deg" x="180" y="0" z="0"/>
+      </physvol>
+      <physvol name="BGO_crystal_PV0x10a766300">
+        <volumeref ref="BGO_crystal0xc9f1b4a00"/>
+        <position name="BGO_crystal_PV0x10a766300_pos" unit="mm" x="0" y="0" z="-134.275"/>
+      </physvol>
+      <physvol name="BGO_teflon_wrapping_PV0x10a766350">
+        <volumeref ref="BGO_teflon_wrapping0xc9f040320"/>
+        <position name="BGO_teflon_wrapping_PV0x10a766350_pos" unit="mm" x="0" y="0" z="-159.375"/>
+      </physvol>
+      <physvol name="src_stainless_steel_capsule_PV0xc9f011400">
+        <volumeref ref="src_stainless_steel_capsule0xc9f0403c0"/>
+        <position name="src_stainless_steel_capsule_PV0xc9f011400_pos" unit="mm" x="0" y="0" z="-181.005"/>
+      </physvol>
+      <physvol name="logicMarker_PV0xc9ec7a9e0">
+        <volumeref ref="logicMarker0xc9f1b4aa0"/>
+        <position name="logicMarker_PV0xc9ec7a9e0_pos" unit="mm" x="0" y="0" z="-176.005"/>
+      </physvol>
+    </volume>
+    <volume name="AmBeHousingLV0xc9f1b4780">
+      <materialref ref="G4_AIR0x10a757fe0"/>
+      <solidref ref="AmBeHousing0xc9f1b0540"/>
+      <physvol name="barrel_air_vol_PV0x10a766210">
+        <volumeref ref="barrel_air_vol_LV0xc9f1b4820"/>
+        <position name="barrel_air_vol_PV0x10a766210_pos" unit="mm" x="0" y="0" z="7.365"/>
+      </physvol>
+    </volume>
+  </structure>
+
+  <setup name="Default" version="1.0">
+    <world ref="AmBeHousingLV0xc9f1b4780"/>
+  </setup>
+
+</gdml>
