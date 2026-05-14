@@ -4,6 +4,18 @@
   <define>
     <matrix coldim="2" name="RINDEX0xc9f051b20" values="1.3776e-06 1.00002 6.19921e-06 1.00002"/>
     <matrix coldim="2" name="GROUPVEL0xc9ec9dce0" values="1.3776e-06 299.786 6.19921e-06 299.786"/>
+    <matrix coldim="2" name="BGO_SCINTILLATIONCOMPONENT" values="1.771*eV 0.00 1.922*eV 0.08 2.084*eV 0.28 2.275*eV 0.62 2.505*eV 0.95 2.755*eV 0.87 2.987*eV 0.42 3.220*eV 0.08 3.492*eV 0.00 3.874*eV 0.00 4.350*eV 0.00 5.060*eV 0.00 6.199*eV 0.00"/>
+    <matrix coldim="2" name="BGO_RINDEX" values="1.771*eV 2.084 1.922*eV 2.095 2.084*eV 2.107 2.275*eV 2.124 2.505*eV 2.146 2.755*eV 2.174 2.987*eV 2.216 3.220*eV 2.241 3.492*eV 2.289 3.874*eV 2.387 4.350*eV 2.473 5.060*eV 2.589 6.199*eV 2.718"/>
+    <matrix coldim="2" name="BGO_ABSLENGTH" values="1.771*eV 10.0*cm 1.922*eV 9.9*cm 2.084*eV 9.7*cm 2.275*eV 9.6*cm 2.505*eV 9.4*cm 2.755*eV 9.1*cm 2.987*eV 8.6*cm 3.220*eV 8.0*cm 3.492*eV 7.3*cm 3.874*eV 2.6*cm 4.350*eV 1.0e-6*cm 5.060*eV 1.0e-6*cm 6.199*eV 1.0e-6*cm"/>
+    <matrix coldim="1" name="BGO_SCINTILLATIONYIELD" values="10000/MeV"/>
+    <matrix coldim="1" name="BGO_RESOLUTIONSCALE" values="2.0"/>
+    <matrix coldim="1" name="BGO_SCINTILLATIONTIMECONSTANT1" values="1.0*ns"/>
+    <matrix coldim="1" name="BGO_SCINTILLATIONTIMECONSTANT2" values="300.0*ns"/>
+    <matrix coldim="1" name="BGO_SCINTILLATIONYIELD1" values="0.0"/>
+    <matrix coldim="1" name="BGO_SCINTILLATIONYIELD2" values="1.0"/>
+    <matrix coldim="2" name="TEFLON_RINDEX" values="1.771*eV 1.35 1.922*eV 1.35 2.084*eV 1.35 2.275*eV 1.35 2.505*eV 1.35 2.755*eV 1.35 2.987*eV 1.35 3.220*eV 1.35 3.492*eV 1.35 3.874*eV 1.35 4.350*eV 1.35 5.060*eV 1.35 6.199*eV 1.35"/>
+    <matrix coldim="2" name="TEFLON_REFLECTIVITY" values="1.771*eV 0.90 1.922*eV 0.90 2.084*eV 0.90 2.275*eV 0.90 2.505*eV 0.90 2.755*eV 0.90 2.987*eV 0.90 3.220*eV 0.90 3.492*eV 0.90 3.874*eV 0.90 4.350*eV 0.90 5.060*eV 0.90 6.199*eV 0.90"/>
+    <matrix coldim="2" name="TEFLON_EFFICIENCY" values="1.771*eV 0.0 1.922*eV 0.0 2.084*eV 0.0 2.275*eV 0.0 2.505*eV 0.0 2.755*eV 0.0 2.987*eV 0.0 3.220*eV 0.0 3.492*eV 0.0 3.874*eV 0.0 4.350*eV 0.0 5.060*eV 0.0 6.199*eV 0.0"/>
   </define>
 
   <materials>
@@ -65,6 +77,31 @@
       <fraction n="0.755267755267755" ref="N0xc9f110480"/>
       <fraction n="0.231781231781232" ref="O0xc9f110540"/>
       <fraction n="0.0128270128270128" ref="Ar0xc9f110600"/>
+    </material>
+    <material name="BGO">
+      <property name="SCINTILLATIONCOMPONENT1" ref="BGO_SCINTILLATIONCOMPONENT"/>
+      <property name="SCINTILLATIONCOMPONENT2" ref="BGO_SCINTILLATIONCOMPONENT"/>
+      <property name="RINDEX" ref="BGO_RINDEX"/>
+      <property name="ABSLENGTH" ref="BGO_ABSLENGTH"/>
+      <property name="SCINTILLATIONYIELD" ref="BGO_SCINTILLATIONYIELD"/>
+      <property name="RESOLUTIONSCALE" ref="BGO_RESOLUTIONSCALE"/>
+      <property name="SCINTILLATIONTIMECONSTANT1" ref="BGO_SCINTILLATIONTIMECONSTANT1"/>
+      <property name="SCINTILLATIONTIMECONSTANT2" ref="BGO_SCINTILLATIONTIMECONSTANT2"/>
+      <property name="SCINTILLATIONYIELD1" ref="BGO_SCINTILLATIONYIELD1"/>
+      <property name="SCINTILLATIONYIELD2" ref="BGO_SCINTILLATIONYIELD2"/>
+      <D unit="g/cm3" value="7.13"/>
+      <fraction n="1.0" ref="G4_BGO"/>
+    </material>
+    <material name="Teflon">
+      <property name="RINDEX" ref="TEFLON_RINDEX"/>
+      <property name="REFLECTIVITY" ref="TEFLON_REFLECTIVITY"/>
+      <property name="EFFICIENCY" ref="TEFLON_EFFICIENCY"/>
+      <D unit="g/cm3" value="2.2"/>
+      <fraction n="1.0" ref="G4_TEFLON"/>
+    </material>
+    <material name="StainlessSteel">
+      <D unit="g/cm3" value="8.0"/>
+      <fraction n="1.0" ref="G4_STAINLESS-STEEL"/>
     </material>
   </materials>
 
@@ -135,7 +172,7 @@
       <solidref ref="srcHousing0xc9f110a80"/>
     </volume>
     <volume name="stainless_steel_sheild0xc9f040280">
-      <materialref ref="G4_AIR0x10a757fe0"/>
+      <materialref ref="StainlessSteel"/>
       <solidref ref="shield0xc9f035500"/>
     </volume>
     <volume name="black_foam0xc9f1b48c0">
@@ -147,15 +184,15 @@
       <solidref ref="srcHousing0xc9f114180"/>
     </volume>
     <volume name="BGO_crystal0xc9f1b4a00">
-      <materialref ref="G4_AIR0x10a757fe0"/>
+      <materialref ref="BGO"/>
       <solidref ref="bgo0xc9f035700"/>
     </volume>
     <volume name="BGO_teflon_wrapping0xc9f040320">
-      <materialref ref="G4_AIR0x10a757fe0"/>
+      <materialref ref="Teflon"/>
       <solidref ref="bgoWrap0xc9f110b40"/>
     </volume>
     <volume name="src_stainless_steel_capsule0xc9f0403c0">
-      <materialref ref="G4_AIR0x10a757fe0"/>
+      <materialref ref="StainlessSteel"/>
       <solidref ref="capsule0xc9f110c00"/>
     </volume>
     <volume name="logicMarker0xc9f1b4aa0">

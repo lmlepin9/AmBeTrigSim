@@ -6,7 +6,6 @@
 #include "G4LogicalSkinSurface.hh"
 #include "G4LogicalVolume.hh"
 #include "G4Material.hh"
-#include "G4MaterialPropertiesTable.hh"
 #include "G4NistManager.hh"
 #include "G4OpticalSurface.hh"
 #include "G4PVPlacement.hh"
@@ -19,73 +18,6 @@
 #include <utility>
 
 namespace {
-void ConfigureOpticalMaterials()
-{
-  auto* nist = G4NistManager::Instance();
-  auto* bgo = nist->FindOrBuildMaterial("G4_BGO");
-  auto* teflon = nist->FindOrBuildMaterial("G4_TEFLON");
-  auto* air = nist->FindOrBuildMaterial("G4_AIR");
-
-  constexpr G4int n = 13;
-  G4double energy[n] = {
-    1.771 * eV, 1.922 * eV, 2.084 * eV, 2.275 * eV, 2.505 * eV,
-    2.755 * eV, 2.987 * eV, 3.220 * eV, 3.492 * eV, 3.874 * eV,
-    4.350 * eV, 5.060 * eV, 6.199 * eV
-  };
-
-  // Sampled from the BGOg4Sim BGO spectrum; normalized shape is enough for Geant4.
-  G4double bgoScint[n] = {
-    0.00, 0.08, 0.28, 0.62, 0.95, 0.87, 0.42,
-    0.08, 0.00, 0.00, 0.00, 0.00, 0.00
-  };
-  G4double bgoRIndex[n] = {
-    2.084, 2.095, 2.107, 2.124, 2.146, 2.174, 2.216,
-    2.241, 2.289, 2.387, 2.473, 2.589, 2.718
-  };
-  G4double bgoAbs[n] = {
-    10.0 * cm, 9.9 * cm, 9.7 * cm, 9.6 * cm, 9.4 * cm, 9.1 * cm,
-    8.6 * cm, 8.0 * cm, 7.3 * cm, 2.6 * cm, 1.0e-6 * cm,
-    1.0e-6 * cm, 1.0e-6 * cm
-  };
-
-  auto* bgoMpt = new G4MaterialPropertiesTable();
-  bgoMpt->AddProperty("SCINTILLATIONCOMPONENT1", energy, bgoScint, n);
-  bgoMpt->AddProperty("SCINTILLATIONCOMPONENT2", energy, bgoScint, n);
-  bgoMpt->AddProperty("RINDEX", energy, bgoRIndex, n);
-  bgoMpt->AddProperty("ABSLENGTH", energy, bgoAbs, n);
-  bgoMpt->AddConstProperty("SCINTILLATIONYIELD", 10000. / MeV);
-  bgoMpt->AddConstProperty("RESOLUTIONSCALE", 2.0);
-  bgoMpt->AddConstProperty("SCINTILLATIONTIMECONSTANT1", 1.0 * ns);
-  bgoMpt->AddConstProperty("SCINTILLATIONTIMECONSTANT2", 300.0 * ns);
-  bgoMpt->AddConstProperty("SCINTILLATIONYIELD1", 0.0);
-  bgoMpt->AddConstProperty("SCINTILLATIONYIELD2", 1.0);
-  bgo->SetMaterialPropertiesTable(bgoMpt);
-
-  G4double airRIndex[n];
-  G4double airAbs[n];
-  G4double teflonRIndex[n];
-  G4double teflonReflectivity[n];
-  G4double teflonEfficiency[n];
-  for (G4int i = 0; i < n; ++i) {
-    airRIndex[i] = 1.00029;
-    airAbs[i] = 1.0 * m;
-    teflonRIndex[i] = 1.35;
-    teflonReflectivity[i] = 0.90;
-    teflonEfficiency[i] = 0.0;
-  }
-
-  auto* airMpt = new G4MaterialPropertiesTable();
-  airMpt->AddProperty("RINDEX", energy, airRIndex, n);
-  airMpt->AddProperty("ABSLENGTH", energy, airAbs, n);
-  air->SetMaterialPropertiesTable(airMpt);
-
-  auto* teflonMpt = new G4MaterialPropertiesTable();
-  teflonMpt->AddProperty("RINDEX", energy, teflonRIndex, n);
-  teflonMpt->AddProperty("REFLECTIVITY", energy, teflonReflectivity, n);
-  teflonMpt->AddProperty("EFFICIENCY", energy, teflonEfficiency, n);
-  teflon->SetMaterialPropertiesTable(teflonMpt);
-}
-
 void ApplyTransparentWireframe(G4LogicalVolume* logical)
 {
   if (!logical) {
@@ -112,24 +44,22 @@ void ApplyTransparentWireframe(G4LogicalVolume* logical)
   }
 }
 
-void ApplyDetectorMaterials(G4LogicalVolume* logical)
+void ApplyDetectorVisualizationAndSurfaces(G4LogicalVolume* logical)
 {
   if (!logical) {
     return;
   }
 
   const auto name = logical->GetName();
-  auto* nist = G4NistManager::Instance();
 
   if (name.find("BGO_crystal") != std::string::npos) {
-    logical->SetMaterial(nist->FindOrBuildMaterial("G4_BGO"));
     G4VisAttributes attributes(G4Colour(0.55, 0.55, 0.60, 0.35));
     attributes.SetForceWireframe(true);
     attributes.SetForceAuxEdgeVisible(true);
     logical->SetVisAttributes(attributes);
-    G4cout << "Assigned G4_BGO with scintillation properties to " << name << G4endl;
+    G4cout << name << " uses GDML material " << logical->GetMaterial()->GetName()
+           << G4endl;
   } else if (name.find("BGO_teflon_wrapping") != std::string::npos) {
-    logical->SetMaterial(nist->FindOrBuildMaterial("G4_TEFLON"));
     G4VisAttributes attributes(G4Colour(0.85, 0.85, 1.0, 0.25));
     attributes.SetForceWireframe(true);
     attributes.SetForceAuxEdgeVisible(true);
@@ -142,18 +72,19 @@ void ApplyDetectorMaterials(G4LogicalVolume* logical)
     surface->SetPolish(0.9);
     surface->SetMaterialPropertiesTable(logical->GetMaterial()->GetMaterialPropertiesTable());
     new G4LogicalSkinSurface("BGO_Teflon_SkinSurface", logical, surface);
-    G4cout << "Assigned reflective G4_TEFLON optical skin to " << name << G4endl;
+    G4cout << name << " uses GDML material " << logical->GetMaterial()->GetName()
+           << " with reflective optical skin" << G4endl;
   } else if (name.find("stainless_steel") != std::string::npos) {
-    logical->SetMaterial(nist->FindOrBuildMaterial("G4_STAINLESS-STEEL"));
     G4VisAttributes attributes(G4Colour(0.62, 0.64, 0.66, 0.35));
     attributes.SetForceWireframe(true);
     attributes.SetForceAuxEdgeVisible(true);
     logical->SetVisAttributes(attributes);
-    G4cout << "Assigned G4_STAINLESS-STEEL to " << name << G4endl;
+    G4cout << name << " uses GDML material " << logical->GetMaterial()->GetName()
+           << G4endl;
   }
 
   for (auto i = 0; i < logical->GetNoDaughters(); ++i) {
-    ApplyDetectorMaterials(logical->GetDaughter(i)->GetLogicalVolume());
+    ApplyDetectorVisualizationAndSurfaces(logical->GetDaughter(i)->GetLogicalVolume());
   }
 }
 
@@ -190,9 +121,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   }
 
   G4cout << "Loaded detector geometry from " << fGdmlPath << G4endl;
-  ConfigureOpticalMaterials();
   ApplyTransparentWireframe(gdmlWorld->GetLogicalVolume());
-  ApplyDetectorMaterials(gdmlWorld->GetLogicalVolume());
+  ApplyDetectorVisualizationAndSurfaces(gdmlWorld->GetLogicalVolume());
 
   auto* air = G4NistManager::Instance()->FindOrBuildMaterial("G4_AIR");
   auto* worldSolid = new G4Box("World", 1.0 * m, 1.0 * m, 1.0 * m);
